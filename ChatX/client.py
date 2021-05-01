@@ -27,7 +27,7 @@ class Client:
 					print(f"Receving {data['name']} from {data['from_user']} ...")
 					file_name = data['file_name']
 			except (KeyError, UnicodeDecodeError):
-				with open(f"{data['from_user']}.jpeg", "wb+") as img:
+				with open(f"received/{data['from_user']}.jpeg", "wb+") as img:
 					img.write(raw_data)
 					print("File Recevied!")
 
