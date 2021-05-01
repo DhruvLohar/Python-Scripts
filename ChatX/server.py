@@ -3,9 +3,9 @@ import socket
 import threading
 
 class Server:
-    def __init__(self, host="localhost", port=int(sys.argv[1]), backlog=10, buffer_size=4096):
-        self.host = host
-        self.port = port
+    def __init__(self, backlog=10, buffer_size=4096):
+        self.host = str(sys.argv[1])
+        self.port = int(sys.argv[2])
         self.backlog = backlog
         self.buff_size = buffer_size
         self.user_data = {}
