@@ -4,9 +4,9 @@ import threading
 import json
 
 class Client:
-	def __init__(self, host="localhost", port=int(sys.argv[1]), buffer_size=40960000):
-		self.host = host
-		self.port = port
+	def __init__(self, buffer_size=40960000):
+		self.host = str(sys.argv[1])
+		self.port = int(sys.argv[2])
 		self.buff_size = buffer_size
 		self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		self.server.connect((self.host, self.port))
@@ -27,7 +27,7 @@ class Client:
 					print(f"Receving {data['name']} from {data['from_user']} ...")
 					file_name = data['file_name']
 			except (KeyError, UnicodeDecodeError):
-				with open(f"received/{data['from_user']}.jpeg", "wb+") as img:
+				with open(f"received/{data['name']}", "wb+") as img:
 					img.write(raw_data)
 					print("File Recevied!")
 
