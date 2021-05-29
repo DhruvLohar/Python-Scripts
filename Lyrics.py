@@ -10,32 +10,28 @@
 import requests
 from bs4 import BeautifulSoup
 
-def get_lyrics(cmd):
-  data = cmd.lower().split(' ')
-  type = data.pop()
-  song_name = '-'.join(data).capitalize()
-  page = requests.get(f"https://genius.com/{song_name}-lyrics")
-  soup = BeautifulSoup(page.content, 'html.parser')
-  lyrics = soup.find(class_="lyrics").get_text()
+class Lyrics:
+    def __init__(self, query):
+        self.query = query.replace(' ', '+')
+        self.get_lyrics()
+    
+    def get_seach_results(self):
+        response = requests.get(f'https://search.azlyrics.com/search.php?q={self.query}')
+        page = BeautifulSoup(response.content, 'html.parser')
+        links = [link['href'] for link in page.find_all('a')]
+        for link in links:
+            if self.query.split('+')[0] in link:
+                return link
+                break
 
-  if type == 'full':
-    print(lyrics)
-  elif type == 'verse_1':
-    verse_1 = ""
-    for line in lyrics.splitlines():
-      if '[Verse 2]' in line:
-        break
-      else:
-        verse_1 += line + "\n"
-    print(verse_1)
-  elif type == 'verse_2':
-    index = lyrics.splitlines().index('[Verse 2]')
-    for i in lyrics.splitlines()[index:]:
-      print(i)
-  else:
-    print("Something Went Wrong!")
+    def get_lyrics(self):
+        url = self.get_seach_results()
+        singer = url.split('/')[4]
+        response = requests.get(url)
+        page = BeautifulSoup(response.content, 'html.parser')
+        lyrics = page.find('div', class_=None, id=None)
+        print(lyrics.get_text())
+        print(f'By {singer.upper()}')
 
-
-# sia chandeleier (verse_1/verse_2/full)
-cmd = str(input("Enter Song Name --> ")).lower()
-get_lyrics(cmd)
+song = input('Enter Song Name --> ')
+lyrics = Lyrics(song)
