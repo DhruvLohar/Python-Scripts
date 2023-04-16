@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <winsock2.h>
-#include <pthread.h>
 #include <windows.h>
 
 #define HOST "159.89.214.31"
