@@ -3,8 +3,8 @@
 #include <pthread.h>
 #include <windows.h>
 
-#define HOST "127.0.0.1"
-#define PORT 8080
+#define HOST "159.89.214.31"
+#define PORT 4040
 
 #pragma comment(lib, "ws2_32.lib") // Linking the socket library
 
