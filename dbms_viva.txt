@@ -35,6 +35,14 @@ ADD CONSTRAINT constraint_name UNIQUE (column_name);
 ALTER TABLE table_name
 ALTER COLUMN column_name SET NOT NULL;
 
+ALTER TABLE orders
+ADD CONSTRAINT check_order_amount CHECK (order_amount > 0);
+
+ALTER TABLE child_table
+ADD CONSTRAINT fk_constraint_name
+FOREIGN KEY (child_column)
+REFERENCES parent_table(parent_column);
+
 # STRING
 SELECT 
     CONCAT(column1, column2) AS concatenated_string,
