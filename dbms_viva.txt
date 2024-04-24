@@ -1,4 +1,46 @@
-CREATE TABLE user(
-	id integer primary key auto_increment,
-	name varchar(255)
-)
+UPDATE table_name
+SET column1 = value1, column2 = value2, ...
+WHERE condition;
+
+DELETE FROM table_name
+WHERE condition;
+
+ALTER TABLE table_name
+ADD column_name datatype;
+
+# JOINS
+
+SELECT columns
+FROM table1
+INNER JOIN table2 ON table1.column = table2.column;
+
+SELECT columns
+FROM table1
+LEFT JOIN table2 ON table1.column = table2.column;
+
+SELECT columns
+FROM table1
+FULL JOIN table2 ON table1.column = table2.column;
+
+# CONSTRAINTS
+CREATE TABLE table_name (
+    column1 datatype NOT NULL,
+    column2 datatype UNIQUE,
+    ...
+);
+
+ALTER TABLE table_name
+ADD CONSTRAINT constraint_name UNIQUE (column_name);
+
+ALTER TABLE table_name
+ALTER COLUMN column_name SET NOT NULL;
+
+# STRING
+SELECT 
+    CONCAT(column1, column2) AS concatenated_string,
+    SUBSTRING(column_name, start_position, length) AS substring,
+    LENGTH(column_name) AS string_length,
+    UPPER(column_name) AS uppercase_string,
+    LOWER(column_name) AS lowercase_string,
+    TRIM(both ' ' FROM column_name) AS trimmed_string
+FROM table_name;
