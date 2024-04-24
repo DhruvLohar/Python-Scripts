@@ -52,3 +52,46 @@ SELECT
     LOWER(column_name) AS lowercase_string,
     TRIM(both ' ' FROM column_name) AS trimmed_string
 FROM table_name;
+
+# NESTED QUERY
+# Subquery, independent:
+SELECT * FROM mytable WHERE style in ( SELECT code FROM othertable WHERE sales > 2000);
+#
+# Subquery, correlated (inner query runs once for each row of outer):
+SELECT id FROM mytable AS x WHERE length > ( SELECT AVG(length) FROM mytable WHERE style = x.coordinate);
+
+# UNION, with named inner query result table
+SELECT avg(a.sale_price) FROM (SELECT sale_price FROM order_items UNION ALL SELECT sale_price FROM order_items_historic) AS a;
+# compare INTERSECT, EXCEPT
+
+# AGGREGATE FUCNTIONS
+select lname, sum(sal) from emp group by lname having sum(sal) > 10000
+
+# TCL CMNDS
+
+-- Begin a transaction
+BEGIN TRANSACTION;
+
+-- Perform some operations
+UPDATE employees
+SET salary = salary * 1.1
+WHERE department = 'Sales';
+
+DELETE FROM payroll
+WHERE employee_id = 101;
+
+-- Check the changes before committing
+SELECT * FROM employees WHERE department = 'Sales';
+SELECT * FROM payroll WHERE employee_id = 101;
+
+-- If everything looks good, commit the transaction
+COMMIT;
+
+# delimiter and trigger 
+delimiter //
+create trigger trig_name before insert on table-name for each row begin 
+
+if new.age>18 then set new.adult = 1; else set new.adult = 0;
+end if;
+end //
+delimiter ;
