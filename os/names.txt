@@ -1,0 +1,8 @@
+dinningphil.c
+roundrobin.c
+fcfs.c
+priority.c
+bestfitworstfit.c
+fifo.c
+lru.c
+sjf.c
