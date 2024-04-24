@@ -1,85 +1,105 @@
 #include <stdio.h>
+#include <stdbool.h>
+
+struct Process
+{
+  int id;
+  int arrivalTime;
+  int burstTime;
+  int startTime;
+  int finishTime;
+  int waitingTime;
+  int turnaroundTime;
+};
 
 int main()
 {
-  int avail, i, j = 0, p, k, n, no, miss = 0, hit = 0, frame[20], arr[30], temp[100];
-  float missper, hitper;
+  int numProcesses, quantum;
 
-  printf("Enter number of pages: ");
-  scanf("%d", &n);
+  printf("Enter the number of processes: ");
+  scanf("%d", &numProcesses);
 
-  for (i = 0; i < n; i++)
+  struct Process processes[numProcesses];
+
+  printf("Enter the quantum: ");
+  scanf("%d", &quantum);
+
+  printf("Enter the process numbers: ");
+  for (int i = 0; i < numProcesses; i++)
   {
-    printf("Page No.%d : ", i + 1);
-    scanf("%d", &arr[i]);
+    scanf("%d", &(processes[i].id));
   }
 
-  printf("Enter frame size: ");
-  scanf("%d", &no);
-
-  printf("Pages\t\tPage Frame\n");
-
-  // Initialize frame array
-  for (i = 0; i < no; i++)
+  printf("Enter the Arrival time of processes: ");
+  for (int i = 0; i < numProcesses; i++)
   {
-    frame[i] = 0;
+    scanf("%d", &(processes[i].arrivalTime));
   }
 
-  for (i = 0; i < no; i++)
+  printf("Enter the Burst time of processes: ");
+  for (int i = 0; i < numProcesses; i++)
   {
-    temp[i] = -1;
+    scanf("%d", &(processes[i].burstTime));
   }
 
-  for (i = 0; i < n; i++)
+  int currentTime = 0;
+  bool done = false;
+  while (!done)
   {
-    printf("%d\t\t", arr[i]);
-    avail = 0;
-
-    for (k = 0; k < no; k++)
+    done = true; // Assume all processes are done
+    for (int i = 0; i < numProcesses; i++)
     {
-      if (frame[k] == arr[i])
+      if (processes[i].burstTime > 0)
       {
-        avail = 1;
-
-        for (k = 0; k < no; k++)
-        {
-          printf("%d\t", frame[k]);
-        }
-
-        printf("Hit");
-        hit++;
+        done = false; // If any process is not done, set done to false
+        int slice = (processes[i].burstTime < quantum) ? processes[i].burstTime : quantum;
+        processes[i].burstTime -= slice;
+        processes[i].startTime = currentTime;
+        currentTime += slice;
+        processes[i].finishTime = currentTime;
       }
     }
-
-    if (avail == 0)
-    {
-      frame[j] = arr[i];
-      miss++;
-
-      for (k = 0; k < no; k++)
-      {
-        if (j == k)
-        {
-          printf("%d\t", frame[k]);
-          continue;
-        }
-
-        printf("%d\t", frame[k]);
-      }
-
-      j = (j + 1) % no;
-    }
-
-    printf("\n");
   }
 
-  missper = (float)miss / n * 100;
-  hitper = (float)hit * 100 / n;
+  // Calculate waiting time and turnaround time
+  for (int i = 0; i < numProcesses; i++)
+  {
+    processes[i].turnaroundTime = processes[i].finishTime - processes[i].arrivalTime;
+    processes[i].waitingTime = processes[i].turnaroundTime - processes[i].burstTime;
+  }
 
-  printf("No. of misses: %d\n", miss);
-  printf("Miss Percentage: %f%% \n", missper);
-  printf("No. of hits: %d\n", hit);
-  printf("Hit percentage : %f%%\n", hitper);
+  // Print the Gantt chart
+  printf("\nGantt chart\n");
+  printf("--------------------------------------------------------\n");
+  for (int i = 0; i < numProcesses; i++)
+  {
+    printf("| P%d ", processes[i].id);
+  }
+  printf("|\n");
+  printf("--------------------------------------------------------\n");
+
+  // Print process details
+  printf("\n| Process ID | Arrival Time | Burst Time | Start Time | Finish Time | Waiting Time | Turnaround Time |\n");
+  for (int i = 0; i < numProcesses; i++)
+  {
+    printf("|     %2d     |      %3d      |     %3d    |     %3d     |      %3d      |      %3d      |        %3d       |\n",
+           processes[i].id, processes[i].arrivalTime, processes[i].burstTime,
+           processes[i].startTime, processes[i].finishTime, processes[i].waitingTime,
+           processes[i].turnaroundTime);
+  }
+
+  // Calculate and print average waiting time and turnaround time
+  int totalWaitingTime = 0, totalTurnaroundTime = 0;
+  for (int i = 0; i < numProcesses; i++)
+  {
+    totalWaitingTime += processes[i].waitingTime;
+    totalTurnaroundTime += processes[i].turnaroundTime;
+  }
+  double avgWaitingTime = (double)totalWaitingTime / numProcesses;
+  double avgTurnaroundTime = (double)totalTurnaroundTime / numProcesses;
+
+  printf("\nAverage Waiting Time: %.2lf\n", avgWaitingTime);
+  printf("Average Turnaround Time: %.2lf\n", avgTurnaroundTime);
 
   return 0;
 }
