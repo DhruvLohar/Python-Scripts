@@ -1,6 +1,6 @@
 #include<stdio.h>
-#include<conio.h>
 #include<string.h>
+
 int match(char st[100], char pat[100]);
 int main(int argc, char **argv) {
     char st[100], pat[100];
