@@ -1,12 +1,79 @@
-UPDATE table_name
-SET column1 = value1, column2 = value2, ...
-WHERE condition;
+#DDL COMMANDS
 
-DELETE FROM table_name
-WHERE condition;
+    CREATE table table_name(cn1 dt(size), cn2 dt(size)......);
+    Drop table tablename;
+    ALTER table table_name add column coln datatype(size);
+    rename table old_name to new_name;
+    desc tablename;
 
-ALTER TABLE table_name
-ADD column_name datatype;
+#DML COMMANDS
+
+    INSERT into tablename values(v1,v2,v3,v4);
+
+    UPDATE table_name
+    SET column1 = value1, column2 = value2, ...
+    WHERE condition;
+
+    DELETE FROM table_name
+    WHERE condition;
+
+    ALTER TABLE table_name
+    ADD column_name datatype;
+
+#INTEGRITY CONSTRAINTS
+
+1.DOMAIN
+
+    1.NOT NULL
+        CREATE table table_name(cn1 dt(size) not null, cn2 dt(size)......); 
+
+        after creating table
+        ALTER table table_name modify column coln datatype(size) not null;
+
+        dropping
+        ALTER table table_name modify column coln datatype(size) null;
+
+    2.DEFAULT
+        create table table_name(cn1 datatype(size),cn2 datatype(size) default 'values' );
+
+        after creating table
+        ALTER table table_name modify column coln datatype(size) set default 'values';
+
+        dropping
+        ALTER table table_name modify column coln datatype(size) drop default;
+
+    3.CHECK
+        create table table_name(age datatype(size),cn2 datatype(size) check(age>=18) );
+
+        after creating table
+        ALTER table table_name add constraint con_name check(age>=18);
+
+        dropping
+        ALTER table table_name drop constraint con_name;
+
+2.ENTITY- INTEGRITY
+
+    1.UNIQUE
+        CREATE table table_name(cn1 dt(size) unique, cn2 dt(size)......);
+
+        after creating table
+        ALTER table table_name add constraint con_name unique(cn);
+
+        dropping
+        ALTER table table_name drop index con_name;
+
+     2.PRIMARY
+        CREATE table table_name(cn1 dt(size) primary key, cn2 dt(size)......);
+
+        after creating table
+        ALTER table table_name add constraint con_name primary key(cn);
+
+        dropping
+        ALTER table table_name drop primary key;
+
+3.REFERENTIAL
+     CREATE table table_name(cn1 dt(size) primary key, cn2 dt(size) constraint fk1 foreign key(cn) reference tn1(cn));
+
 
 # JOINS
 
@@ -50,8 +117,14 @@ SELECT
     LENGTH(column_name) AS string_length,
     UPPER(column_name) AS uppercase_string,
     LOWER(column_name) AS lowercase_string,
-    TRIM(both ' ' FROM column_name) AS trimmed_string
+    TRIM(both ' ' FROM column_name) AS trimmed_string,
 FROM table_name;
+
+#Basic syntax for creating a view
+    CREATE VIEW view_name AS
+    SELECT column1, column2, ...
+    FROM table_name
+    WHERE condition;
 
 # NESTED QUERY
 # Subquery, independent:
@@ -95,12 +168,3 @@ if new.age>18 then set new.adult = 1; else set new.adult = 0;
 end if;
 end //
 delimiter ;
-
-CREATE TABLE Orders (
-    OrderID int NOT NULL,
-    OrderNumber int NOT NULL,
-    PersonID int,
-    PRIMARY KEY (OrderID),
-    FOREIGN KEY (PersonID) REFERENCES Persons(PersonID)
-);
-
