@@ -95,3 +95,12 @@ if new.age>18 then set new.adult = 1; else set new.adult = 0;
 end if;
 end //
 delimiter ;
+
+CREATE TABLE Orders (
+    OrderID int NOT NULL,
+    OrderNumber int NOT NULL,
+    PersonID int,
+    PRIMARY KEY (OrderID),
+    FOREIGN KEY (PersonID) REFERENCES Persons(PersonID)
+);
+
