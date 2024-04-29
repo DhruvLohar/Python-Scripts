@@ -28,19 +28,19 @@
         CREATE table table_name(cn1 dt(size) not null, cn2 dt(size)......); 
 
         after creating table
-        ALTER table table_name modify column coln datatype(size) not null;
+        ALTER table table_name modify coln datatype(size) not null;
 
         dropping
-        ALTER table table_name modify column coln datatype(size) null;
+        ALTER table table_name modify coln datatype(size) null;
 
     2.DEFAULT
         create table table_name(cn1 datatype(size),cn2 datatype(size) default 'values' );
 
         after creating table
-        ALTER table table_name modify column coln datatype(size) set default 'values';
+        ALTER table table_name alter coln datatype(size) set default 'values';
 
         dropping
-        ALTER table table_name modify column coln datatype(size) drop default;
+        ALTER table table_name alter coln datatype(size) drop default;
 
     3.CHECK
         create table table_name(age datatype(size),cn2 datatype(size) check(age>=18) );
