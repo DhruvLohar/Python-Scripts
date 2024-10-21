@@ -1,0 +1,38 @@
+windows commands
+1. Hostname(give the computer name)
+2. systeminfo(info specs in detail about the cp)
+3.ipconfig (give the ipconfiguration of the connectd network)
+3a.ipconfig /? (tell the details of the commands that can be used)
+3b.ipconfig/all (display all the adapter information)
+
+4. ping (list all commands for ping that is checking connection with another host in the localhost)
+4a. ping -t `ip address` (check connection status with device with ip address, for wrong ip address  it will show timed out )
+
+5. getmac (check the assigned physical addres i.e macaddress )
+
+6.netstat (to show the active networks and networks status, to check which application uses which port and for troubke shooting network issues)
+
+6a. netsta - a (shows all connections)
+
+7 arp - (Displays and modifies the IP-to-Physical address translation tables used by
+address resolution protocol (ARP).)
+
+8. nslookup ( search ip configs of domains globally that are on dns server)
+
+9> pathping (rasta to a different n/w batao + rasta ke beech mai stops kaunse kaunse kaunse hai)
+
+10. nbtstat (Displays protocol statistics and current TCP/IP connections using NBT
+(NetBIOS over TCP/IP).)
+ 
+11. route (list down routing table related commands, and admin can change the routing table configs)
+
+12. netsh (display or modify the n/w configuration)
+
+13. tracert ( network packets that are being sent and recieved are shown via this)
+
+14. net (managing newtork resources, users, services and more)
+
+15. telnet (useed to connect a remote computer over a network)
+
+
+ 

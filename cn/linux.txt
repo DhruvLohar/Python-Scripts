@@ -1,0 +1,31 @@
+linx commands
+
+hostname - display/modify the computer hostname
+
+ifonfig - diaply the ip configurations
+
+iwconfig - configurw rieless network interfaces
+
+ip - display and manage routing policy's tunnels etc
+
+ping - to check reachability of host on a network
+
+traceroute - traces the routes taken by a host to reach a network
+
+netstat  - diasplya the network connection routing tables etc
+
+ss - display socket statics similar to netstat but more detailed and faster
+
+nslookup - used to find out the ip addresses of dns hosted platform
+
+dig - queries dns servers for information finding about host address mail exchanges etc
+
+route - display or modify ip routing table
+
+arp - display or modify the arp cache
+
+nmcli - cmd tool for managing network manager
+
+ethtool - display/update the ethernet device settin
+
+curl - transfer data to or from server, using http/https ftp,udp etc protocols) 
