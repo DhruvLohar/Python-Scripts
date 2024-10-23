@@ -1,0 +1,29 @@
+table create karo and text file create karo
+and text file ko copy paste in var/lib/mysql-files
+
+
+load data infile '/var/lib/mysql-files/data.txt' into table students fields terminated by ','
+
+---To append another text file
+
+same bas txt name alag
+
+
+---To calculate avg
+
+In text file
+name,a1,a2,a3,avg
+sahil,20,30,40
+Aishwarya,30,40,50
+----""---
+
+create table student2(name varchar(10),avg int(20));
+load data infile '/var/lib/mysql-files/data.txt' into table student fields terminated by ',' lines terminated by '\n' ignore 1 lines
+(name,@a1,@a2,@a3)
+set avg=(@a1+@a2+@a3)/3
+
+
+---To create a temp table frm an existing table
+create table temp(height int(20),weight int(20));
+
+insert into temp(height,weight) select * from data

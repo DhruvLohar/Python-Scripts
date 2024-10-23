@@ -3,3 +3,6 @@ kmeans.txt
 NB.txt
 partition.txt
 viz_R.txt
+extraction_and_avg.txt
+Hist.txt
+partitions_sahil.txt
