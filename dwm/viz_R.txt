@@ -1,0 +1,32 @@
+#plot 1 point
+plot(10,8)
+
+#plot multiple points
+x<-c(1,2,3,4)
+y<-c(2,3,4,5)
+plot(x,y)
+
+#plot line
+plot(6:20,type="l")
+
+#plot line with label
+plot(2:20, main="my graph",xlab="x-axis", ylab="y-axis", type="l")
+
+#changing the type using pch
+plot(1:10,pch=6,cex=2)
+
+#plotting pie chart
+v<-c(10,20,30,40,50)
+pie(v)
+
+#plotting bar graph
+x<-c("a","b","c")
+y<-c(2,10,19,14)
+barplot(y, names.arg=x)
+
+#plot histogram
+v<-c(1,2,3,4,5,6,7,8)
+hist(v,xlab= "weight",col="yellow",border="blue",xlim=c(0,50),ylim=c(0,5),break=5)
+
+
+Rscript filename.R

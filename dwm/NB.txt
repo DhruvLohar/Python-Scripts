@@ -1,0 +1,38 @@
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import GaussianNB
+from sklearn.metrics import accuracy_score
+import numpy as np
+
+# create a large synthetic dataset
+np.random.seed(42)
+data_size = 100
+data = {
+    'feature1': np.random.randint(1,10,size=data_size),
+    'feature2': np.random.randint(1,10,size=data_size),
+    'feature3': np.random.randint(1,10,size=data_size),
+    'label': np.random.randint(0,2,size=data_size) #binary label
+}
+
+# convert to dataframes
+df = pd.DataFrame(data)
+
+# Define the Features and Labels
+
+X = df[['feature1','feature2','feature3']]
+y = df['label']
+
+# split the dataset into training and testing dataset
+
+X_train,X_test,y_train,y_test = train_test_split(X,y,test_size=0.2,random_state=42)
+
+# Create and train the Naive Bayes Classifier
+model = GaussianNB()
+model.fit(X_train,y_train)
+
+# Make Predictions
+y_pred = model.predict(X_test)
+
+# Calculate accuracy
+accuracy =accuracy_score(y_test,y_pred)
+print(f"Accuracy: {accuracy:.2f}")

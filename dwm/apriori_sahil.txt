@@ -1,0 +1,100 @@
+from collections import Counter
+from itertools import combinations
+
+# Step 1: Define the transaction data
+data = [
+    ['T100', ['I1', 'I2', 'I5']],
+    ['T200', ['I2', 'I4']],
+    ['T300', ['I2', 'I3']],
+    ['T400', ['I1', 'I2', 'I4']],
+    ['T500', ['I1', 'I3']],
+    ['T600', ['I2', 'I3']],
+    ['T700', ['I1', 'I3']],
+    ['T800', ['I1', 'I2', 'I3', 'I5']],
+    ['T900', ['I1', 'I2', 'I3']]
+]
+
+# Step 2: Define the minimum support
+min_support = 2  # Minimum support count
+
+# Step 3: Extract all unique items (for candidate generation)
+items = sorted(set(item for transaction in data for item in transaction[1]))
+
+# Display the dataset
+print("Transactions:")
+for d in data:
+    print(f"{d[0]}: {d[1]}")
+print()
+
+# Step 4: Generate frequent 1-itemsets (L1)
+def generate_frequent_itemsets(data, candidates, min_support):
+    c = Counter()
+    for candidate in candidates:
+        for transaction in data:
+            if candidate.issubset(set(transaction[1])):
+                c[candidate] += 1
+    # Filter by min_support
+    return Counter({k: v for k, v in c.items() if v >= min_support})
+
+# Step 5: Generate candidate itemsets
+def generate_candidates(prev_itemsets, k):
+    candidates = set()
+    prev_itemsets = list(prev_itemsets)
+    for i in range(len(prev_itemsets)):
+        for j in range(i + 1, len(prev_itemsets)):
+            union_set = prev_itemsets[i].union(prev_itemsets[j])
+            if len(union_set) == k:
+                candidates.add(union_set)
+    return candidates
+
+# Step 6: Apriori algorithm main loop
+def apriori(data, items, min_support):
+    # Initial 1-itemset candidates
+    C1 = [frozenset([item]) for item in items]
+    
+    # Frequent 1-itemsets
+    L1 = generate_frequent_itemsets(data, C1, min_support)
+    print("L1 (Frequent 1-itemsets):")
+    for itemset, support in L1.items():
+        print(f"{list(itemset)}: {support}")
+    print()
+
+    # Store the frequent itemsets
+    L = L1
+    k = 2  # Start with 2-itemsets
+    result = []
+    
+    while L:
+        result.append(L)
+        candidates = generate_candidates(L, k)
+        L = generate_frequent_itemsets(data, candidates, min_support)
+        
+        if L:
+            print(f"L{k} (Frequent {k}-itemsets):")
+            for itemset, support in L.items():
+                print(f"{list(itemset)}: {support}")
+            print()
+        k += 1
+    
+    return result
+
+# Run the Apriori algorithm
+frequent_itemsets = apriori(data, items, min_support)
+
+# Step 7: Generate association rules
+def generate_association_rules(frequent_itemsets, data):
+    print("Association Rules:")
+    for k_itemsets in frequent_itemsets[1:]:
+        for itemset in k_itemsets:
+            subsets = [frozenset(x) for i in range(1, len(itemset)) for x in combinations(itemset, i)]
+            for antecedent in subsets:
+                consequent = itemset - antecedent
+                if consequent:
+                    # Calculate support and confidence
+                    sup_itemset = sum(1 for t in data if itemset.issubset(t[1]))
+                    sup_antecedent = sum(1 for t in data if antecedent.issubset(t[1]))
+                    confidence = sup_itemset / sup_antecedent
+                    print(f"{list(antecedent)} -> {list(consequent)}: {confidence*100:.2f}% confidence")
+
+# Generate association rules
+generate_association_rules(frequent_itemsets, data)

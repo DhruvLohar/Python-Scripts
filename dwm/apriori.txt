@@ -1,0 +1,91 @@
+from collections import defaultdict
+
+# Function to calculate frequent individual items
+def get_frequent_itemsets(transactions, support_threshold):
+    item_counts = defaultdict(int)
+    
+    # First pass: Count individual items
+    for transaction in transactions:
+        for item in transaction:
+            item_counts[item] += 1
+    
+    # Filter out items that do not meet the support threshold
+    frequent_items = {item: count for item, count in item_counts.items() if count >= support_threshold}
+    
+    print("\nItem Frequencies:")
+    for item, count in frequent_items.items():
+        print(f"Item '{item}': {count} times")
+    
+    return frequent_items
+
+# Function to generate candidate pairs from frequent items
+def generate_candidate_pairs(frequent_items):
+    items = list(frequent_items.keys())
+    candidate_pairs = []
+    
+    for i in range(len(items)):
+        for j in range(i + 1, len(items)):
+            candidate_pairs.append((items[i], items[j]))
+    
+    return candidate_pairs
+
+# Function to calculate the frequency of item pairs
+def calculate_pair_frequencies(transactions, candidate_pairs):
+    pair_counts = defaultdict(int)
+    
+    for transaction in transactions:
+        for pair in candidate_pairs:
+            if pair[0] in transaction and pair[1] in transaction:
+                pair_counts[pair] += 1
+    
+    return pair_counts
+
+# Function to generate association rules based on confidence
+def generate_association_rules(pair_counts, frequent_items, support_threshold):
+    print("\nAssociation Rules:")
+    
+    for pair, pair_count in pair_counts.items():
+        if pair_count >= support_threshold:
+            # Calculate confidence for both rules: A -> B and B -> A
+            confidence_A_to_B = pair_count / frequent_items[pair[0]]
+            confidence_B_to_A = pair_count / frequent_items[pair[1]]
+            
+            # Print rules
+            print(f"Rule: {pair[0]} -> {pair[1]} (Confidence: {confidence_A_to_B:.2f})")
+            print(f"Rule: {pair[1]} -> {pair[0]} (Confidence: {confidence_B_to_A:.2f})")
+
+# Apriori pass that calculates frequent itemsets and generates association rules
+def apriori_pass(transactions, support_threshold):
+    frequent_items = get_frequent_itemsets(transactions, support_threshold)
+    
+    print("\nFinal Frequent Itemset:")
+    for item, count in frequent_items.items():
+        print(f"Item '{item}': {count} times")
+    
+    # Generate candidate pairs (frequent itemsets of size 2)
+    candidate_pairs = generate_candidate_pairs(frequent_items)
+    
+    # Calculate the frequency of each pair
+    pair_counts = calculate_pair_frequencies(transactions, candidate_pairs)
+    
+    # Generate and print association rules
+    generate_association_rules(pair_counts, frequent_items, support_threshold)
+
+# Helper to convert input into transactions list
+def get_transactions_from_input():
+    transactions = []
+    set_count = int(input("Enter the number of sets: "))
+    
+    for _ in range(set_count):
+        set_id = input("Enter the id of set: ")
+        num_items = int(input(f"Enter the number of items for set {set_id}: "))
+        items = input(f"Enter the items (one character each) for set {set_id}: ")
+        transactions.append(items)
+    
+    return transactions
+
+# Main execution
+if __name__ == "__main__":
+    transactions = get_transactions_from_input()
+    support_value = int(input("Enter the support value: "))
+    apriori_pass(transactions, support_value)

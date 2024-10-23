@@ -1,0 +1,76 @@
+import numpy as np
+from sklearn.cluster import KMeans
+
+# Function to get user input for data points
+def get_user_data():
+    n_points = int(input("Enter the number of data points: "))
+    X = []
+    for i in range(n_points):
+        x = float(input(f"Enter x coordinate for point {i+1}: "))
+        y = float(input(f"Enter y coordinate for point {i+1}: "))
+        X.append([x, y])
+    return np.array(X)
+
+# Get user input for the number of clusters
+n_clusters = int(input("Enter the number of clusters: "))
+
+# Get user data points
+X = get_user_data()
+
+# Custom KMeans implementation to show centroids after each iteration
+kmeans = KMeans(n_clusters=n_clusters, init='k-means++', n_init=1, max_iter=300, random_state=42)
+
+# Step-by-step fit process to show intermediate centroids
+for i in range(kmeans.max_iter):
+    # Fit the model up to the current iteration
+    kmeans.max_iter = i + 1
+    kmeans.fit(X)
+    
+    # Show the current iteration and centroids
+    print(f"Iteration {i + 1}:")
+    print("Current centroids:", kmeans.cluster_centers_)
+    
+    # If the algorithm converges, stop early
+    if kmeans.n_iter_ <= i:
+        print("Convergence achieved.")
+        break
+
+# Final cluster labels and centroids after convergence
+labels = kmeans.labels_
+centroids = kmeans.cluster_centers_
+
+# Output final results
+print("\nFinal Cluster labels for each point:", labels)
+print("Final Centroids of clusters:", centroids)
+
+
+
+
+--------------------------------------------------------------------------------------------------------
+
+num_elements = int(input("How Many elements do you want to enter?"))
+elements_list = []
+
+for idx in range(1,num_elements+1):
+    value = int(input(f"Input element {idx}:"))
+    elements_list.append(value)
+
+print("you entered: ", elements_list)
+
+centroid1 =int(input("Input Value For Centroid 1: "))
+centroid2 =int(input("Input Value For Centroid 2: "))
+
+group1 =[]
+group2 =[]
+
+for item in elements_list:
+    if abs(item-centroid1)<abs(item-centroid2):
+        group1.append(item)
+    else:
+        group2.append(item)
+
+avg1 = sum(group1)/len(group1) if group1 else 0
+avg2 = sum(group2)/len(group2) if group2 else 0
+
+print(f"Group 1 (Closest to {avg1}): {group1}")
+print(f"Group 2 (Closest to {avg2}): {group2}")
